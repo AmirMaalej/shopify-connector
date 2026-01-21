@@ -8,5 +8,15 @@ from typing import Any, Dict, List
 
 
 def build_request(shop_id: str, payload: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """TODO: construct POST request details to everstox endpoint without sending."""
-    raise NotImplementedError
+    """
+    Construct POST request details to everstox endpoint without sending.
+    """
+    url = f"https://api.demo.everstox.com/shops/{shop_id}/orders"
+    return {
+        "method": "POST",
+        "url": url,
+        "headers": {
+            "Content-Type": "application/json",
+        },
+        "json": payload,
+    }

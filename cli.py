@@ -9,6 +9,7 @@ import sys
 
 from connector.config import load_settings
 from connector.importer import import_orders
+from pprint import pprint
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -21,8 +22,22 @@ def main(argv: list[str] | None = None) -> int:
     if args.dry_run:
         settings.dry_run = True
 
-    # TODO: invoke import and print summary.
-    import_orders(settings)
+    result = import_orders(settings)
+
+    print("Summary:")
+    pprint(result.get("summary"))
+
+    excluded_sample = result.get("excluded_sample") or []
+    if excluded_sample:
+        print("Excluded sample (up to 5):")
+        pprint(excluded_sample)
+
+    prepared = result.get("prepared_request") or {}
+    payload = prepared.get("json") or []
+    print("Prepared request:")
+    print(f"{prepared.get('method')} {prepared.get('url')}")
+    print(f"Payload orders: {len(payload)}")
+
     return 0
 
 
