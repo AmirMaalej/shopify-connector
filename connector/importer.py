@@ -79,8 +79,13 @@ def _filter_orders(
         line_items = (order.get("lineItems") or {}).get("nodes", [])
         for item in line_items:
             qty = item.get("quantity") or 0
-            fulfilled = item.get("fulfilledQuantity") or 0
-            remaining_qty = qty - fulfilled
+            
+            status = (item.get("fulfillmentStatus") or "").upper()
+            # If Shopify says a line is fulfilled, skip it; otherwise import full quantity
+            if status == "FULFILLED":
+                continue
+            remaining_qty = qty
+
             if remaining_qty > 0:
                 item_with_remaining = dict(item)
                 item_with_remaining["remaining_qty"] = remaining_qty

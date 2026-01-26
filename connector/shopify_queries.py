@@ -23,10 +23,6 @@ query Orders($first: Int!, $after: String, $query: String!) {
       displayFulfillmentStatus
       tags
 
-      customer {
-        email
-      }
-
       shippingAddress {
         firstName
         lastName
@@ -81,7 +77,6 @@ query Orders($first: Int!, $after: String, $query: String!) {
             sku
           }
           fulfillmentStatus
-          fulfilledQuantity
         }
       }
     }
